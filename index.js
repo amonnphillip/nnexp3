@@ -6,7 +6,7 @@ const layer = require('./layer.js');
 var network = function() {
   return {
     layers: [],
-    learnRate: 0.1,
+    learnRate: 0.01,
     initialize: function(layers) {
       // Create the layers
       this.layers = [];
@@ -19,11 +19,16 @@ var network = function() {
         previousLayer = newLayer;
       }
     },
-    train: function(iterations, trainingDataReader) {
+    train: function(trainingDataReader, options) {
+      console.log('Training Started');
 
       var imageCount = trainingDataReader.imageCount();
+      //imageCount = 200;// TODO: remove!!!
 
       var trainCount = 0;
+
+      var iterations = options.trainingIterations;
+      var maxIterations = options.trainingIterations;
 
       while(iterations > 0) {
         var imageIndex = 0;
@@ -33,21 +38,10 @@ var network = function() {
           var imageBuffer = trainingDataReader.getImage(imageIndex);
           var imageLabel = trainingDataReader.getLabel(imageIndex);
 
-          //trainingDataReader.displayImageToConsole(imageIndex);
-/*
-          if ((imageIndex & 1) === 0) {
-            imageBuffer = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-            imageLabel = 0;
-          } else {
-            imageBuffer = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
-            imageLabel = 1;
-          }
-*/
           // Do forward pass
           var inputLayer = this.layers[0];
-          for (var nodeIndex = 0; nodeIndex < inputLayer.getNodeCount(); nodeIndex++) {
+          for (var nodeIndex = 0; nodeIndex < inputLayer.getForwardCount(); nodeIndex++) {
             inputLayer.setNodeOutput(nodeIndex, imageBuffer[nodeIndex] / 255);
-            //inputLayer.setNodeOutput(nodeIndex, imageBuffer[nodeIndex]);
           }
 
           this.forward();
@@ -65,43 +59,40 @@ var network = function() {
             }
           }
 
-          this.displayToConsole();
-          console.log('imageLabel: ' + imageLabel);
-
-          if (trainCount % 1000 === 0) {
-            this.displayToConsole();
-            console.log('imageLabel: ' + imageLabel);
+          if (options.displayToConsole) {
+            if (trainCount % 1000 === 0) {
+              this.displayToConsole('trainCount: ' + trainCount + ' of ' + (imageCount * maxIterations), 'imageLabel: ' + imageLabel);
+            }
           }
-
-          //process.stdout.write("\u001b[2J\u001b[0;0H");
-          //console.log('trainCount: ' + trainCount + ' imageIndex: ' + imageIndex);
 
           imageIndex++;
-
-          if (imageIndex > 1) {
-            imageIndex = 0;
-          }
-          
           trainCount ++;
         }
 
         iterations --;
       }
+
+      console.log('');
+      console.log('Training complete');
+      console.log('');
     },
     test: function(trainingDataReader) {
       var imageCount = trainingDataReader.imageCount();
       var imageIndex = 0;
 
-      imageCount = 1000; // TODO: Remove!
+      imageCount = 100; // TODO: Remove!
+      var correctlyPredicted = 0;
 
       while(imageIndex < imageCount) {
 
-        var imageBuffer = trainingDataReader.getImage(imageIndex);
-        var imageLabel = trainingDataReader.getLabel(imageIndex);
+        var randomImagePicked = Math.round(Math.random() * imageCount);
+
+        var imageBuffer = trainingDataReader.getImage(randomImagePicked);
+        var imageLabel = trainingDataReader.getLabel(randomImagePicked);
 
         // Do forward pass
         var inputLayer = this.layers[0];
-        for (var nodeIndex = 0;nodeIndex < inputLayer.getNodeCount();nodeIndex ++) {
+        for (var nodeIndex = 0;nodeIndex < inputLayer.getForwardCount();nodeIndex ++) {
           inputLayer.setNodeOutput(nodeIndex, imageBuffer[nodeIndex] / 255);
         }
 
@@ -109,17 +100,27 @@ var network = function() {
 
         // Do backward pass
         var expectedOutput = [0,0,0,0,0,0,0,0,0,0];
-        expectedOutput[imageLabel] = 0.999;
+        expectedOutput[imageLabel] = 1;
 
-        console.log('Test ' + imageIndex);
+        trainingDataReader.displayImageToConsole(randomImagePicked);
+        //console.log('Test ' + imageIndex);
         console.log('Label ' + imageLabel);
         var displayOutOut = 'Output:   ';
         var displayOutExp = 'Expected: ';
         var displayOutErr = 'Errors:   ';
 
+        var prediction = {
+          max: 0,
+          index: 0,
+        };
         var outputLayer = this.layers[this.layers.length - 1];
-        for (var nodeIndex = 0;nodeIndex < outputLayer.nodes.length;nodeIndex ++) {
+        for (var nodeIndex = 0;nodeIndex < outputLayer.getForwardCount();nodeIndex ++) {
           var output = outputLayer.getNodeOutput(nodeIndex);
+
+          if (output > prediction.max) {
+            prediction.max = output;
+            prediction.index = nodeIndex;
+          }
 
           displayOutOut += output + ' ';
           displayOutExp += expectedOutput[nodeIndex] + ' ';
@@ -128,10 +129,17 @@ var network = function() {
         console.log(displayOutOut);
         console.log(displayOutExp);
         console.log(displayOutErr);
+        console.log('Prediction is: ' + prediction.index);
         console.log('');
+
+        if (prediction.index === imageLabel) {
+          correctlyPredicted ++;
+        }
 
         imageIndex ++;
       }
+
+      console.log('Correctly predicted ' + correctlyPredicted + ' out of ' + imageCount + ' (' + ((correctlyPredicted / imageCount) * 100) + '%)');
     },
     forward: function() {
       this.layers[0].forward();
@@ -139,11 +147,17 @@ var network = function() {
         this.layers[index].forward(this.layers[index - 1]);
       }
     },
-    displayToConsole: function() {
+    displayToConsole: function(preOut, postOut) {
       console.log('');
       console.log('-----------------------------------------------');
+      if (typeof preOut !== 'undefined') {
+        console.log(preOut);
+      }
       for (var index = 0;index < this.layers.length;index ++) {
         this.layers[index].displayToConsole();
+      }
+      if (typeof postOut !== 'undefined') {
+        console.log(postOut);
       }
     }
   }
@@ -274,7 +288,10 @@ theNetwork.initialize([
 ]);
 
 // Train it
-theNetwork.train(1, new trainingDataReader('train-images-idx3-ubyte.gz', 'train-labels-idx1-ubyte.gz'));
+theNetwork.train(new trainingDataReader('train-images-idx3-ubyte.gz', 'train-labels-idx1-ubyte.gz'), {
+  displayToConsole: true,
+  trainingIterations: 1
+});
 
 // Test the network
-//theNetwork.test(new trainingDataReader('t10k-images-idx3-ubyte.gz', 't10k-labels-idx1-ubyte.gz'));
+theNetwork.test(new trainingDataReader('t10k-images-idx3-ubyte.gz', 't10k-labels-idx1-ubyte.gz'));

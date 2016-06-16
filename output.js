@@ -7,7 +7,7 @@ module.exports = function() {
     createLayer: function(options, previousLayer) {
       assert(previousLayer.getNodeData().forward.width === options.width);
       assert(previousLayer.getNodeData().forward.height === options.height);
-      assert(previousLayer.getNodeData().forward.depth === options.depth); // TODO: Need to figure out 
+      assert(previousLayer.getNodeData().forward.depth === options.depth);
 
       const size = options.width * options.height * options.depth;
 
@@ -40,7 +40,6 @@ module.exports = function() {
 
       var backPropOutput = new Array(nodeData.back.count);
       for (var nodeIndex = 0;nodeIndex < nodeData.back.count;nodeIndex ++) {
-        //backPropOutput[nodeIndex] = (expectedOutputs[nodeIndex] - nodeData.forward.output[nodeIndex]);
         backPropOutput[nodeIndex] = expectedOutputs[nodeIndex];
       }
 

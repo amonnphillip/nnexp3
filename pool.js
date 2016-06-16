@@ -50,9 +50,9 @@ module.exports = function() {
             for (var ys = 0;ys < nodeData.stride;ys ++) {
               var prevIndex = (d * previousLayerWidth * previousLayerHeight) + (((y * nodeData.stride) + ys) * previousLayerWidth) + (x * nodeData.stride);
               for (var xs = 0;xs < nodeData.stride;xs ++) {
-                var p = prevLayerNodeData.forward.output[prevIndex];
-                if (p > output[index]) {
-                  output[index] = p;
+                var prevNodeValue = prevLayerNodeData.forward.output[prevIndex];
+                if (prevNodeValue > output[index]) {
+                  output[index] = prevNodeValue;
                   backData[index] = prevIndex;
                 }
 
@@ -68,7 +68,7 @@ module.exports = function() {
       nodeData.backData = backData;
       nodeData.forward.output = output;
     },
-    backward: function(nodeData, prevLayerNodeData, nextLayerNodeData, learnRate) {
+    backward: function(nodeData, prevLayerNodeData, nextLayerNodeData) {
       var backPropOutput = new Array(nodeData.back.count);
       for (var nodeIndex = 0;nodeIndex < nodeData.back.count;nodeIndex ++) {
         backPropOutput[nodeIndex] = 0;
@@ -76,10 +76,9 @@ module.exports = function() {
 
       for (var nodeIndex = 0;nodeIndex < nodeData.forward.count;nodeIndex ++) {
         backPropOutput[nodeData.backData[nodeIndex]] += nextLayerNodeData.back.output[nodeIndex];
-        //console.log('nodeData.backData[nodeIndex]: ' + nodeData.backData[nodeIndex] + ' nextLayerNodeData.back.output[nodeIndex]: ' + nextLayerNodeData.back.output[nodeIndex]);
       }
 
       nodeData.back.output = backPropOutput;
-    },
+    }
   });
 };

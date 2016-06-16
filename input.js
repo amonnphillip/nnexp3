@@ -1,9 +1,14 @@
 var nMixin = require('./mixin.js');
 var nodeBase = require('./base.js');
+var assert = require('assert');
 
 module.exports = function() {
   return nMixin(new nodeBase(), {
     createLayer: function(options) {
+      assert(options.width, 'No width property in options object');
+      assert(options.height, 'No height property in options object');
+      assert(options.depth, 'No depth property in options object');
+
       var size = options.width * options.height * options.depth;
 
       return {

@@ -1,5 +1,5 @@
 {
-  "name": "nnexp2",
+  "name": "nnexp3",
   "version": "1.0.0",
   "description": "neural network ",
   "main": "index.js",
@@ -8,18 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/amonnphillip/nnexp1.git"
+    "url": "git+https://github.com/amonnphillip/nnexp3.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/amonnphillip/nnexp1/issues"
+    "url": "https://github.com/amonnphillip/nnexp3/issues"
   },
-  "homepage": "https://github.com/amonnphillip/nnexp1#readme",
+  "homepage": "https://github.com/amonnphillip/nnexp3#readme",
   "dependencies": {
     "pngjs": "^2.3.0"
   },
   "devDependencies": {
-    "jasmine": "^2.4.1"
   }
 }

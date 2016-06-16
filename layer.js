@@ -59,7 +59,7 @@ module.exports = function() {
         this.node.forward(this.nodeData);
       }
     },
-    backward: function(prevLayer, nextLayer, learnRate, expectedOutputs) { // TODO: Clean up lean rate
+    backward: function(prevLayer, nextLayer, learnRate, expectedOutputs) {
       var prevLayerNodeData;
       if (typeof prevLayer !== 'undefined') {
         prevLayerNodeData = prevLayer.nodeData;
@@ -77,10 +77,7 @@ module.exports = function() {
       return this.nodeData;
     },
     getNodeOutput: function(nodeIndex) {
-      return this.node.getOutput(this.nodeData[nodeIndex]);
-    },
-    getNodeCount: function() {
-      return this.nodeData.count;
+      return this.nodeData.forward.output[nodeIndex];
     },
     getForwardCount: function() {
       return this.nodeData.forward.count;
