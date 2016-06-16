@@ -37,8 +37,11 @@ module.exports = function() {
         output[nodeIndex] = 0;
       }
 
+
+
       var max = Number.NEGATIVE_INFINITY;
       var prevForwards = prevLayerNodeData.forward.output;
+      //var prevForwards = [71.001353325644,71.001353325644,71.001353325644,71.001353325644,71.001353325644,163.35091118800426,71.001353325644,71.001353325644,71.001353325644,71.001353325644]
       for (var nodeIndex = 0;nodeIndex < prevLayerNodeData.forward.count;nodeIndex ++) {
         if (prevForwards[nodeIndex] > max) {
           max = prevForwards[nodeIndex];
@@ -65,7 +68,12 @@ module.exports = function() {
       var backPropOutput = new Array(nodeData.back.count);
 
       for (var nodeIndex = 0;nodeIndex < nodeData.forward.count;nodeIndex ++) {
-        backPropOutput[nodeIndex] = nextLayerNodeData.back.output[nodeIndex] - nodeData.forward.output[nodeIndex];
+
+        if (nodeData.forward.output[nodeIndex] > 1) {
+          console.log('');
+        }
+        //backPropOutput[nodeIndex] = nextLayerNodeData.back.output[nodeIndex] - nodeData.forward.output[nodeIndex];
+        backPropOutput[nodeIndex] = -(nodeData.forward.output[nodeIndex] - nextLayerNodeData.back.output[nodeIndex]);
         //backPropOutput[nodeIndex] = nextLayerNodeData.back.output[nodeIndex];
 
         if (isNaN(backPropOutput[nodeIndex])) { // TODO: remove this!!!

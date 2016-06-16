@@ -65,7 +65,8 @@ var network = function() {
             }
           }
 
-          //this.displayToConsole();
+          this.displayToConsole();
+          console.log('imageLabel: ' + imageLabel);
 
           if (trainCount % 1000 === 0) {
             this.displayToConsole();
@@ -139,10 +140,11 @@ var network = function() {
       }
     },
     displayToConsole: function() {
+      console.log('');
+      console.log('-----------------------------------------------');
       for (var index = 0;index < this.layers.length;index ++) {
         this.layers[index].displayToConsole();
       }
-      console.log('');
     }
   }
 };
@@ -229,8 +231,8 @@ const theNetwork = new network();
 theNetwork.initialize([
   {
     type: 'input',
-    width: 24, // We assume the training data contains images of 28x28 pixels
-    height: 24, // We assume the training data contains images of 28x28 pixels
+    width: 28, // We assume the training data contains images of 28x28 pixels
+    height: 28, // We assume the training data contains images of 28x28 pixels
     depth: 1
   }, {
     type: 'conv',
@@ -258,7 +260,7 @@ theNetwork.initialize([
     width: 10,
     height: 1,
     depth: 10
-  },  {
+  }, {
     type: 'softmax',
     width: 10,
     height: 1,

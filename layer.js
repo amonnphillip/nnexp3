@@ -128,8 +128,6 @@ module.exports = function() {
       console.log('layer type: ' + this.type);
 
       var maxOutCount = 260;
-      var outCount = 0;
-      var out = '';
 
       switch(this.type) {
         case 'input':
@@ -148,22 +146,23 @@ module.exports = function() {
         case 'sigmoid':
           this.displayListToConsole('listOfList', 'weights:', this.nodeData.weights, maxOutCount);
           this.displayListToConsole('list', 'error:', this.nodeData.error, maxOutCount);
-          this.displayListToConsole('list', 'output:', this.nodeData.forward.output, maxOutCount);
           this.displayListToConsole('list', 'gradient:', this.nodeData.back.output, maxOutCount);
+          this.displayListToConsole('list', 'output:', this.nodeData.forward.output, maxOutCount);
           break;
         case 'pool':
           this.displayListToConsole('list', 'backdata:', this.nodeData.backData, maxOutCount);
-          this.displayListToConsole('list', 'output:', this.nodeData.forward.output, maxOutCount);
           this.displayListToConsole('list', 'gradient:', this.nodeData.back.output, maxOutCount);
+          this.displayListToConsole('list', 'output:', this.nodeData.forward.output, maxOutCount);
           break;
         case 'softmax':
-          this.displayListToConsole('list', 'output:', this.nodeData.forward.output, maxOutCount);
           this.displayListToConsole('list', 'gradient:', this.nodeData.back.output, maxOutCount);
+          this.displayListToConsole('list', 'output:', this.nodeData.forward.output, maxOutCount);
           break;
         case 'fullyConnected':
-          this.displayListToConsole('list', 'output:', this.nodeData.forward.output, maxOutCount);
           this.displayListToConsole('listOfList', 'weights:', this.nodeData.weights, maxOutCount);
+          this.displayListToConsole('list', 'bias:', this.nodeData.bias, maxOutCount);
           this.displayListToConsole('list', 'gradient:', this.nodeData.back.output, maxOutCount);
+          this.displayListToConsole('list', 'output:', this.nodeData.forward.output, maxOutCount);
           break;
         case 'output':
           this.displayListToConsole('list', 'gradient:', this.nodeData.back.output, maxOutCount);

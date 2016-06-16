@@ -51,7 +51,7 @@ module.exports = function() {
        }*/
 
       for (var biasIndex = 0;biasIndex < layer.bias.length;biasIndex ++) {
-        layer.bias[biasIndex] = 0;
+        layer.bias[biasIndex] = 0.1;
       }
 
       for (var depthIndex = 0;depthIndex < options.depth;depthIndex ++) {
@@ -249,7 +249,7 @@ module.exports = function() {
                     //var index1 = ((prevLayerNodeData.width * ay) + ax) * prevLayerNodeData.depth + filterd;
                     var index2 = ((nodeData.width * filtery) + filterx) * nodeData.filterDepth + filterd;
                     //console.log('index1: ' + index1 + ' index2: ' + index2);
-                    filters[index2] += prevLayerNodeData.forward.output[index1] * gradient; // How to do this when this layer is smaller than previous?
+                    filters[index2] += prevLayerNodeData.forward.output[index1] * gradient * 0.01; // How to do this when this layer is smaller than previous?
                     backPropOutputs[index1] += filters[index2] * gradient; //
 
                     if (isNaN(filters[index2])) {
@@ -264,7 +264,7 @@ module.exports = function() {
               }
             }
 
-            nodeData.bias[ad] += gradient;
+            nodeData.bias[ad] += gradient * 0.01;
             //console.log('nodeData.bias[ad]: ' + nodeData.bias[ad] + ' gradient: ' + gradient);
           }
         }

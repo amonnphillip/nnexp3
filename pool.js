@@ -48,7 +48,7 @@ module.exports = function() {
           for (var x = 0; x < nodeData.forward.width; x++) {
 
             for (var ys = 0;ys < nodeData.stride;ys ++) {
-              var prevIndex = (((y * nodeData.stride) + ys) * previousLayerWidth) + (x * nodeData.stride);
+              var prevIndex = (d * previousLayerWidth * previousLayerHeight) + (((y * nodeData.stride) + ys) * previousLayerWidth) + (x * nodeData.stride);
               for (var xs = 0;xs < nodeData.stride;xs ++) {
                 var p = prevLayerNodeData.forward.output[prevIndex];
                 if (p > output[index]) {
@@ -76,6 +76,7 @@ module.exports = function() {
 
       for (var nodeIndex = 0;nodeIndex < nodeData.forward.count;nodeIndex ++) {
         backPropOutput[nodeData.backData[nodeIndex]] += nextLayerNodeData.back.output[nodeIndex];
+        //console.log('nodeData.backData[nodeIndex]: ' + nodeData.backData[nodeIndex] + ' nextLayerNodeData.back.output[nodeIndex]: ' + nextLayerNodeData.back.output[nodeIndex]);
       }
 
       nodeData.back.output = backPropOutput;

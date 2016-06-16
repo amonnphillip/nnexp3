@@ -18,5 +18,8 @@
   "homepage": "https://github.com/amonnphillip/nnexp1#readme",
   "dependencies": {
     "pngjs": "^2.3.0"
+  },
+  "devDependencies": {
+    "jasmine": "^2.4.1"
   }
 }

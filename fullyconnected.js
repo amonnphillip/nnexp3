@@ -27,7 +27,7 @@ module.exports = function() {
       };
 
       for (var biasIndex = 0;biasIndex < options.depth;biasIndex ++) {
-        layer.bias[biasIndex] = 0;
+        layer.bias[biasIndex] = 0.1;
       }
 
       for (var filterIndex = 0;filterIndex < options.depth;filterIndex ++) {
@@ -64,17 +64,32 @@ module.exports = function() {
       for (var nodeIndex = 0;nodeIndex < nodeData.forward.count;nodeIndex ++) {
         var gradient = nextLayerNodeData.back.output[nodeIndex];
 
+        if (gradient > 1 || gradient < -1) {
+          console.log('');
+        }
+
         var weights = nodeData.weights[nodeIndex];
         for (var weightIndex = 0; weightIndex < weights.length; weightIndex++) {
           backPropOutputs[weightIndex] += weights[weightIndex] * gradient;
-          weights[weightIndex] += prevLayerNodeData.forward.output[weightIndex] * gradient;
+          weights[weightIndex] += prevLayerNodeData.forward.output[weightIndex] * gradient * 0.01;
+
+          if (weights[weightIndex] < -2 || weights[weightIndex] > 2) {
+            console.log('');
+          }
+
+          if (weights[weightIndex] < -2 || weights[weightIndex] > 2) {
+            console.log('');
+          }
+
+          //weights[weightIndex] += prevLayerNodeData.forward.output[weightIndex] * gradient;
+          //backPropOutputs[weightIndex] += weights[weightIndex] * gradient;
 
           if (isNaN(weights[weightIndex])) { // TODO: remove this!!!
             console.log();
           }
         }
 
-        nodeData.bias[nodeIndex] += gradient;
+        nodeData.bias[nodeIndex] += gradient * 0.01;
       }
 
       nodeData.back.output = backPropOutputs;

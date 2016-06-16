@@ -1,6 +1,8 @@
 var nMixin = require('./mixin.js');
 var nodeBase = require('./base.js');
 
+// TODO: Does not work, need to refactor
+
 module.exports = function() {
   return nMixin(new nodeBase(), {
     createLayer: function(options, previousLayer) {

@@ -40,7 +40,8 @@ module.exports = function() {
 
       var backPropOutput = new Array(nodeData.back.count);
       for (var nodeIndex = 0;nodeIndex < nodeData.back.count;nodeIndex ++) {
-        backPropOutput[nodeIndex] = (expectedOutputs[nodeIndex] - nodeData.forward.output[nodeIndex]) * learnRate;
+        //backPropOutput[nodeIndex] = (expectedOutputs[nodeIndex] - nodeData.forward.output[nodeIndex]);
+        backPropOutput[nodeIndex] = expectedOutputs[nodeIndex];
       }
 
       nodeData.back.output = backPropOutput;
