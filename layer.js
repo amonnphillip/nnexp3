@@ -131,7 +131,6 @@ module.exports = function() {
           this.displayListToConsole('list', 'output:', this.nodeData.forward.output, maxOutCount);
           break;
         case 'conv':
-          this.displayListToConsole('listOfList', 'weights:', this.nodeData.weights, maxOutCount);
           this.displayListToConsole('listOfList', 'filters:', this.nodeData.filters, maxOutCount);
           this.displayListToConsole('list', 'output:', this.nodeData.forward.output, maxOutCount);
           this.displayListToConsole('list', 'gradient:', this.nodeData.back.output, maxOutCount);

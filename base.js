@@ -1,44 +1,5 @@
 module.exports = function() {
   return {
-    createLayer: function(options, previousLayer) { // TODO: Remove this!
-      var size = options.width * options.height * options.depth;
-
-      var layer = {
-        count: size,
-        width: options.width,
-        height: options.height,
-        depth: options.depth,
-        links: new Array(size),
-        weights: new Array(size),
-        output: new Array(size),
-        error: new Array(size),
-        forward: {
-          count: size,
-          width: options.width,
-          height: options.height,
-          depth: options.depth
-        },
-        back: {
-          count: previousLayer.getForwardWidth() * previousLayer.getForwardHeight() * previousLayer.getForwardDepth(),
-          width: previousLayer.getForwardWidth(),
-          height: previousLayer.getForwardHeight(),
-          depth: previousLayer.getForwardDepth()
-        }
-      };
-
-      for (var index = 0;index < size;index ++) {
-        layer.links[index] = [];
-        layer.weights[index] = [];
-      }
-
-      return layer;
-    },
-    getWeightCount: function(nodeData, nodeIndex) {
-      return nodeData.weights[nodeIndex].length;
-    },
-    getWeight: function(nodeData, nodeIndex, weightIndex) {
-      return nodeData.weights[nodeIndex][weightIndex];
-    },
     getForwardWidth: function(nodeData) {
       return nodeData.forward.width;
     },
@@ -50,6 +11,22 @@ module.exports = function() {
     },
     getForwardOutput: function(nodeData, nodeIndex) {
       return nodeData.forward.output[nodeIndex];
+    },
+    normalizeWeights: function(weights, count) {
+      /*var scale = Math.sqrt(1.0/count);
+      for (var index = 0;index < weights.length;index ++) {
+        weights[index] *= scale;
+      }*/
+
+      var max = 0;
+      for (var index = 0;index < weights.length;index ++) {
+        max += weights[index];
+      }
+
+      for (var index = 0;index < weights.length;index ++) {
+        weights[index] /= max;
+      }
+
     },
     link: function(nodeData, prevLayerNodeData, options) {
       var connections = prevLayerNodeData.forward.count -1;

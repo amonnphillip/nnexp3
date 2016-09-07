@@ -27,7 +27,7 @@ module.exports = function() {
       };
 
       for (var biasIndex = 0;biasIndex < options.depth;biasIndex ++) {
-        layer.bias[biasIndex] = 0.1;
+        layer.bias[biasIndex] = 0;
       }
 
       for (var filterIndex = 0;filterIndex < options.depth;filterIndex ++) {
@@ -36,6 +36,7 @@ module.exports = function() {
           weights[weightIndex] = 1;
         }
         layer.weights[filterIndex] = weights;
+        this.normalizeWeights(layer.weights[filterIndex], weights.length);
       }
 
       return layer;
@@ -71,15 +72,15 @@ module.exports = function() {
         var weights = nodeData.weights[nodeIndex];
         for (var weightIndex = 0; weightIndex < weights.length; weightIndex++) {
           backPropOutputs[weightIndex] += weights[weightIndex] * gradient;
-          weights[weightIndex] += prevLayerNodeData.forward.output[weightIndex] * gradient * learnRate;
-
+          weights[weightIndex] += prevLayerNodeData.forward.output[weightIndex] * gradient * .001;
+/*
           if (weights[weightIndex] < -2 || weights[weightIndex] > 2) { // TODO: remove this!!!
             console.log('');
           }
 
           if (weights[weightIndex] < -2 || weights[weightIndex] > 2) { // TODO: remove this!!!
             console.log('');
-          }
+          }*/
 
 
           if (isNaN(weights[weightIndex])) { // TODO: remove this!!!
@@ -87,7 +88,7 @@ module.exports = function() {
           }
         }
 
-        nodeData.bias[nodeIndex] += gradient * learnRate;
+        //nodeData.bias[nodeIndex] += gradient;
       }
 
       nodeData.back.output = backPropOutputs;

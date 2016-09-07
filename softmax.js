@@ -72,6 +72,7 @@ module.exports = function() {
           console.log('');
         }
         backPropOutput[nodeIndex] = -(nodeData.forward.output[nodeIndex] - nextLayerNodeData.back.output[nodeIndex]);
+        //backPropOutput[nodeIndex] = -(nextLayerNodeData.back.output[nodeIndex] - nodeData.forward.output[nodeIndex]);
 
         if (isNaN(backPropOutput[nodeIndex])) { // TODO: remove this!!!
           console.log();
