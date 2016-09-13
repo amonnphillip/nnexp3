@@ -134,7 +134,7 @@ module.exports = function() {
             //console.log('-');
             //console.log('forward: out index: ' + ((((ay * nodeData.width) + ax) * nodeData.filterDepth) + ad) + ' val: ' + val);
 
-            val += nodeData.bias[ad];
+            //val += nodeData.bias[ad];
 
             //if (val > 10 || val < -10) {
             //  console.log('');
@@ -174,6 +174,14 @@ module.exports = function() {
         backPropOutputsCheck[index] = 0;
       }
 
+      var backFilters = new Array(nodeData.filterCount);
+      for (var filterIndex = 0;filterIndex < nodeData.filterCount;filterIndex ++) {
+        backFilters[filterIndex] = new Array(nodeData.filters[filterIndex].length);
+        for (var index = 0; index < nodeData.filters[filterIndex].length; index++) {
+          backFilters[filterIndex][index] = 0;
+        }
+      }
+
       var stridex = prevLayerNodeData.width / nodeData.width;
       var stridey = prevLayerNodeData.height / nodeData.height;
 
@@ -190,6 +198,7 @@ module.exports = function() {
         var posy = 0;
 
         var filters = nodeData.filters[ad];
+        var backFilter = backFilters[ad];
 
         for (var ay = 0; ay < nodeData.forward.height;ay++) {
           posx = 0;
@@ -220,23 +229,23 @@ module.exports = function() {
                     //console.log('filter d: ' + ad + ' filter index ' + index2 + ' : ' + 'prev layer x,y: ' + ox + ',' + oy);
 
                     //preValuesSum += prevLayerNodeData.forward.output[index1] * gradient * learnRate; // TODO: Remove!!
-
+/*
                     if (index1 > nodeData.forward.output.length || index1 < 0) { // TODO: remove this!!!
                       console.log();
                     }
                     if (index2 > filters.length || index2 < 0) { // TODO: remove this!!!
                       console.log();
-                    }
+                    }*/
 
-                    //filters[index2] += nodeData.forward.output[index1] * gradient;
-                    filters[index2] += prevLayerNodeData.forward.output[index1] * gradient * 0.01;
-                    backPropOutputs[index1] += filters[index2] * gradient * 0.01;// * gradient;
+                    //filters[index2] += nodeData.forward.output[index1] * gradient * 0.1;
+                    backFilter[index2] += prevLayerNodeData.forward.output[index1] * gradient;
+                    backPropOutputs[index1] += filters[index2] * gradient;
 
                     //backPropOutputs[index1] += filters[index2];
-
+/*
                     if (isNaN(backPropOutputs[index1]) || !isFinite(backPropOutputs[index1])) { // TODO: remove this!!!
                       console.log();
-                    }
+                    }*/
 
                     //if (backPropOutputs[index1] > 10 || backPropOutputs[index1] < -10) {
                     //  console.log('');
@@ -262,10 +271,10 @@ module.exports = function() {
       }
 
       //console.log('preValuesSum: ' + preValuesSum);
-
+/*
       if (backPropOutputsCheck.length != nodeData.back.count) {
         console.log('BAD!');
-      }
+      }*/
 /*
       var missing = 0; // TODO: REMOVE!
       var dupes = 0;
@@ -283,6 +292,14 @@ module.exports = function() {
 */
       //console.log('gradSum: ' + gradSum);
       nodeData.back.output = backPropOutputs;
+
+      for (var filterIndex = 0;filterIndex < nodeData.filterCount;filterIndex ++) {
+        var filters = nodeData.filters[filterIndex];
+        var backFilter = backFilters[filterIndex];
+        for (var index = 0; index < nodeData.filters[filterIndex].length; index++) {
+          filters[index] += backFilter[index] * 0.1;
+        }
+      }
     }
   });
 };

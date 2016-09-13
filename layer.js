@@ -94,19 +94,25 @@ module.exports = function() {
     displayListToConsole: function(listType, listLabel, listData, maxOut) {
       var displayList = function(list, label) {
         var out = label;
+        var sum = 0;
+        var outMaxed = false;
         for (var index = 0;index < list.length;index ++) {
-          out += list[index];
-          if (index < list.length) {
-            out += ',';
+          if (!outMaxed) {
+            out += list[index];
+            if (index < list.length) {
+              out += ',';
+            }
+            if (out.length >= maxOut) {
+              out.length = maxOut;
+              outMaxed = true;
+            }
           }
 
-          if (out.length >= maxOut) {
-            out.length = maxOut;
-            break;
-          }
+          sum += list[index];
         }
 
         console.log(out);
+        console.log('sum: ' + sum);
       };
 
       console.log(listLabel);

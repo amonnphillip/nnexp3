@@ -23,7 +23,6 @@ var network = function() {
       console.log('Training Started');
 
       var imageCount = trainingDataReader.imageCount();
-      //imageCount = 200;// TODO: remove!!!
 
       var trainCount = 0;
 
@@ -90,8 +89,8 @@ var network = function() {
 
         var randomImagePicked = Math.round(Math.random() * imageCount);
 
-        var imageBuffer = trainingDataReader.getImage(randomImagePicked % 2);
-        var imageLabel = trainingDataReader.getLabel(randomImagePicked % 2);
+        var imageBuffer = trainingDataReader.getImage(randomImagePicked);
+        var imageLabel = trainingDataReader.getLabel(randomImagePicked);
 
         // Do forward pass
         var inputLayer = this.layers[0];
