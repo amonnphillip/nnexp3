@@ -1,6 +1,6 @@
-var nMixin = require('./mixin.js');
-var nodeBase = require('./base.js');
-var assert = require('assert');
+const nMixin = require('./mixin.js');
+const nodeBase = require('./base.js');
+const assert = require('assert');
 
 module.exports = function() {
   return nMixin(new nodeBase(), {
@@ -51,10 +51,6 @@ module.exports = function() {
       for (var nodeIndex = 0;nodeIndex < prevLayerNodeData.forward.count;nodeIndex ++) {
         exp[nodeIndex] = Math.exp(prevForwards[nodeIndex] - max);
         sum += exp[nodeIndex];
-
-        if (isNaN(exp[nodeIndex])) { // TODO: remove this!!!
-          console.log();
-        }
       }
 
       for (var nodeIndex = 0;nodeIndex < prevLayerNodeData.forward.count;nodeIndex ++) {
@@ -67,16 +63,7 @@ module.exports = function() {
       var backPropOutput = new Array(nodeData.back.count);
 
       for (var nodeIndex = 0;nodeIndex < nodeData.forward.count;nodeIndex ++) {
-
-        if (nodeData.forward.output[nodeIndex] > 1) {  // TODO: remove this!!!
-          console.log('');
-        }
         backPropOutput[nodeIndex] = -(nodeData.forward.output[nodeIndex] - nextLayerNodeData.back.output[nodeIndex]);
-        //backPropOutput[nodeIndex] = -(nextLayerNodeData.back.output[nodeIndex] - nodeData.forward.output[nodeIndex]);
-
-        if (isNaN(backPropOutput[nodeIndex])) { // TODO: remove this!!!
-          console.log();
-        }
       }
 
       nodeData.back.output = backPropOutput;

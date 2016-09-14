@@ -13,11 +13,6 @@ module.exports = function() {
       return nodeData.forward.output[nodeIndex];
     },
     normalizeWeights: function(weights, count) {
-      /*var scale = Math.sqrt(1.0/count);
-      for (var index = 0;index < weights.length;index ++) {
-        weights[index] *= scale;
-      }*/
-
       var max = 0;
       for (var index = 0;index < weights.length;index ++) {
         max += weights[index];
@@ -26,7 +21,6 @@ module.exports = function() {
       for (var index = 0;index < weights.length;index ++) {
         weights[index] /= max;
       }
-
     },
     link: function(nodeData, prevLayerNodeData, options) {
       var connections = prevLayerNodeData.forward.count -1;

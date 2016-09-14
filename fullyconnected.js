@@ -65,30 +65,13 @@ module.exports = function() {
       for (var nodeIndex = 0;nodeIndex < nodeData.forward.count;nodeIndex ++) {
         var gradient = nextLayerNodeData.back.output[nodeIndex];
 
-        if (gradient > 1 || gradient < -1) { // TODO: remove this!!!
-          console.log('');
-        }
-
         var weights = nodeData.weights[nodeIndex];
         for (var weightIndex = 0; weightIndex < weights.length; weightIndex++) {
           backPropOutputs[weightIndex] += weights[weightIndex] * gradient;
-          weights[weightIndex] += prevLayerNodeData.forward.output[weightIndex] * gradient * .001;
-/*
-          if (weights[weightIndex] < -2 || weights[weightIndex] > 2) { // TODO: remove this!!!
-            console.log('');
-          }
-
-          if (weights[weightIndex] < -2 || weights[weightIndex] > 2) { // TODO: remove this!!!
-            console.log('');
-          }*/
-
-
-          if (isNaN(weights[weightIndex])) { // TODO: remove this!!!
-            console.log();
-          }
+          weights[weightIndex] += prevLayerNodeData.forward.output[weightIndex] * gradient * learnRate;
         }
 
-        //nodeData.bias[nodeIndex] += gradient;
+        nodeData.bias[nodeIndex] += gradient * learnRate;
       }
 
       nodeData.back.output = backPropOutputs;

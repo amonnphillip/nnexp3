@@ -1,6 +1,6 @@
-var nMixin = require('./mixin.js');
-var nodeBase = require('./base.js');
-var assert = require('assert');
+const nMixin = require('./mixin.js');
+const nodeBase = require('./base.js');
+const assert = require('assert');
 
 module.exports = function() {
   return nMixin(new nodeBase(), {
@@ -45,13 +45,6 @@ module.exports = function() {
           val = 0;
         }
 
-        //if (val > 20 || val < -20) {
-        //  console.log('');
-        //}
-        if (isNaN(val) || !isFinite(val)) { // TODO: remove this!!!
-          console.log();
-        }
-
         output[nodeIndex] = val;
       }
 
@@ -66,17 +59,7 @@ module.exports = function() {
         } else {
           backPropOutputs[nodeIndex] = nextLayerNodeData.back.output[nodeIndex];
         }
-
-        if (isNaN(backPropOutputs[nodeIndex]) || !isFinite(backPropOutputs[nodeIndex])) { // TODO: remove this!!!
-          console.log();
-        }
-
-        //if (backPropOutputs[nodeIndex] > 10 || backPropOutputs[nodeIndex] < -10) {
-        //  console.log('');
-        //}
       }
-
-
 
       nodeData.back.output = backPropOutputs;
     }

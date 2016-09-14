@@ -1,8 +1,6 @@
 const inputNode = require('./input.js');
-const nodeTanh = require('./tanh.js');
 const nodeConv = require('./conv.js');
 const nodeRelu = require('./relu.js');
-const nodeSigmoid = require('./sigmoid.js');
 const nodePool = require('./pool.js');
 const nodeSoftmax = require('./softmax.js');
 const nodeOutput = require('./output.js');
@@ -20,9 +18,6 @@ module.exports = function() {
         case 'input':
           this.node = new inputNode();
           break;
-        case 'tanh':
-          this.node = new nodeTanh();
-          break;
         case 'conv':
           this.node = new nodeConv();
           break;
@@ -37,10 +32,7 @@ module.exports = function() {
           break;
         case 'output':
           this.node = new nodeOutput();
-          break;
-        case 'sigmoid':
-          this.node = new nodeSigmoid();
-          break;
+          break;;
         case 'fullyConnected':
           this.node = new nodeFullyConnected();
           break;

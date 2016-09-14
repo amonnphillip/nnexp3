@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/amonnphillip/nnexp3#readme",
   "dependencies": {
-    "pngjs": "^2.3.0"
   },
   "devDependencies": {
   }

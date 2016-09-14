@@ -1,5 +1,5 @@
-var nMixin = require('./mixin.js');
-var nodeBase = require('./base.js');
+const nMixin = require('./mixin.js');
+const nodeBase = require('./base.js');
 
 module.exports = function() {
   return nMixin(new nodeBase(), {
@@ -15,7 +15,7 @@ module.exports = function() {
         height: height,
         depth: depth,
         stride: options.stride,
-        spatailExtent: options.spatailExtent, // TODO: Not really used!!!
+        spatailExtent: options.spatailExtent,
         backData: [],
         forward: {
           count: size,
@@ -56,10 +56,6 @@ module.exports = function() {
                   backData[index] = prevIndex;
                 }
 
-                //if (output[index] > 20 || output[index] < -20) {
-                //  console.log('');
-                //}
-
                 prevIndex ++;
               }
             }
@@ -80,13 +76,7 @@ module.exports = function() {
 
       for (var nodeIndex = 0;nodeIndex < nodeData.forward.count;nodeIndex ++) {
         backPropOutput[nodeData.backData[nodeIndex]] += nextLayerNodeData.back.output[nodeIndex];
-
-        //if (backPropOutput[nodeData.backData[nodeIndex]] > 10 || backPropOutput[nodeData.backData[nodeIndex]] < -10) {
-          //console.log('');
-        //}
       }
-
-
 
       nodeData.back.output = backPropOutput;
     }

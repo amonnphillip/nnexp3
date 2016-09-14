@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const zlib = require('zlib');
 const layer = require('./layer.js');
@@ -6,7 +5,7 @@ const layer = require('./layer.js');
 var network = function() {
   return {
     layers: [],
-    learnRate: 0.1,
+    learnRate: 0.01,
     initialize: function(layers) {
       // Create the layers
       this.layers = [];
@@ -58,11 +57,8 @@ var network = function() {
             }
           }
 
-          //this.displayToConsole('trainCount: ' + trainCount + ' of ' + (imageCount * maxIterations), 'imageLabel: ' + imageLabel);
-
-          //this.displayToConsole('trainCount: ' + trainCount + ' of ' + (imageCount * maxIterations), 'imageLabel: ' + imageLabel);
           if (options.displayToConsole) {
-            if (trainCount % 100 === 0) {
+            if (trainCount % 500 === 0) {
               this.displayToConsole('trainCount: ' + trainCount + ' of ' + (imageCount * maxIterations), 'imageLabel: ' + imageLabel);
             }
           }
@@ -82,15 +78,12 @@ var network = function() {
       var imageCount = trainingDataReader.imageCount();
       var imageIndex = 0;
 
-      var maxPredictions = 300;
       var correctlyPredicted = 0;
 
-      while(imageIndex < maxPredictions) {
+      while(imageIndex < imageCount) {
 
-        var randomImagePicked = Math.round(Math.random() * imageCount);
-
-        var imageBuffer = trainingDataReader.getImage(randomImagePicked);
-        var imageLabel = trainingDataReader.getLabel(randomImagePicked);
+        var imageBuffer = trainingDataReader.getImage(imageIndex);
+        var imageLabel = trainingDataReader.getLabel(imageIndex);
 
         // Do forward pass
         var inputLayer = this.layers[0];
@@ -104,7 +97,7 @@ var network = function() {
         var expectedOutput = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         expectedOutput[imageLabel] = 1;
 
-        trainingDataReader.displayImageToConsole(randomImagePicked);
+        trainingDataReader.displayImageToConsole(imageIndex);
         console.log('Label ' + imageLabel);
         var displayOutOut = 'Output:   ';
         var displayOutExp = 'Expected: ';
@@ -140,7 +133,7 @@ var network = function() {
         imageIndex ++;
       }
 
-      console.log('Correctly predicted ' + correctlyPredicted + ' out of ' + maxPredictions + ' images (' + ((correctlyPredicted / maxPredictions) * 100) + '%)');
+      console.log('Correctly predicted ' + correctlyPredicted + ' out of ' + imageCount + ' images (' + ((correctlyPredicted / imageCount) * 100) + '%)');
     },
     forward: function() {
       this.layers[0].forward();
@@ -253,14 +246,14 @@ theNetwork.initialize([
     type: 'conv',
     width: 5,
     height: 5,
-    filterCount: 8,
+    filterCount: 16,
     stride: 1,
     pad: 2
   }, {
     type: 'relu',
     width: 28,
     height: 28,
-    depth: 8,
+    depth: 16,
     stride: 0,
     maxConnections: 1
   }, {
@@ -271,14 +264,14 @@ theNetwork.initialize([
     type: 'conv',
     width: 5,
     height: 5,
-    filterCount: 8,
+    filterCount: 16,
     stride: 1,
     pad: 2
   }, {
     type: 'relu',
     width: 14,
     height: 14,
-    depth: 8,
+    depth: 16,
     stride: 0,
     maxConnections: 1
   }, {

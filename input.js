@@ -1,6 +1,6 @@
-var nMixin = require('./mixin.js');
-var nodeBase = require('./base.js');
-var assert = require('assert');
+const nMixin = require('./mixin.js');
+const nodeBase = require('./base.js');
+const assert = require('assert');
 
 module.exports = function() {
   return nMixin(new nodeBase(), {
