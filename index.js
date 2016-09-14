@@ -244,16 +244,16 @@ theNetwork.initialize([
     depth: 1
   }, {
     type: 'conv',
-    width: 5,
-    height: 5,
-    filterCount: 16,
+    width: 3,
+    height: 3,
+    filterCount: 32,
     stride: 1,
-    pad: 2
+    pad: 1
   }, {
     type: 'relu',
     width: 28,
     height: 28,
-    depth: 16,
+    depth: 32,
     stride: 0,
     maxConnections: 1
   }, {
@@ -262,16 +262,16 @@ theNetwork.initialize([
     spatailExtent: 2
   }, {
     type: 'conv',
-    width: 5,
-    height: 5,
-    filterCount: 16,
+    width: 3,
+    height: 3,
+    filterCount: 32,
     stride: 1,
-    pad: 2
+    pad: 1
   }, {
     type: 'relu',
     width: 14,
     height: 14,
-    depth: 16,
+    depth: 32,
     stride: 0,
     maxConnections: 1
   }, {
