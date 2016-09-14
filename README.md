@@ -7,7 +7,7 @@ I lean heavily on other examples and papers namely the work done by [Andrej Kapa
 
 This experiment has been purposely written from scratch, because I want to learn how neural networks function at the lowest level. How to write layer management and how to debug a neural network. 
 
-Run the experiment. The network will train, then test against images of hand written numberical digits from the MNIST test set. After testing you should see results of around 94% correct image recognition.
+Run the experiment. The network will train, then test against images of hand written numberical digits from the MNIST test set. After testing you should see results of around 96% correct image recognition.
 
 To run this experiment you need to have [NPM](https://www.npmjs.com/) (v3.8.7 +) and [NodeJS](https://nodejs.org) installed (v4.2.4 +). 
 Once you have installed NPM and NodeJS open a command prompt where the package.json file in this project is located and type: 
